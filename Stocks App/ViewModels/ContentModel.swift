@@ -10,24 +10,48 @@ import SwiftUI
 import Combine
 
 class ContentModel:ObservableObject {
+    private let context = PersistenceController.shared.container.viewContext
     
     let APIKey = "FBKE3UHHHPI2WSOC"
 
     private var cancellables = Set<AnyCancellable>()
-    private let symbols:[String] = [
-        "AAPL",
-        "TSLA",
-        "IBM"
-    ]
+    
     @Published var stockData:[StockData] = []
+    @Published var symbol = ""
+    @Published var stockEntities:[StockEntity] = []
     
     init() {
+        loadFromCoreData()
         loadAllSymbols()
     }
+    
+    func loadFromCoreData() {
+        do {
+            stockEntities = try context.fetch(StockEntity.fetchRequest())
+        }catch{
+            print(error)
+        }
+    }
+    
+    func addStock() {
+        let newStock = StockEntity(context: context)
+        newStock.symbol = symbol
+        
+        do {
+            try context.save()
+
+        } catch {
+            print(error)
+        }
+        getStockData(for: symbol)
+        
+        symbol = ""
+    }
+    
     func loadAllSymbols() {
         stockData = []
-        symbols.forEach { symbol in
-            getStockData(for: symbol)
+        stockEntities.forEach { stockEntity in
+            getStockData(for: stockEntity.symbol ?? "")
         }
     }
     

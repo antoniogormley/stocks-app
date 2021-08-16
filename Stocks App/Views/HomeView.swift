@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct HomeView: View {
     @EnvironmentObject var model:ContentModel
@@ -13,6 +14,12 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             List {
+                HStack {
+                    TextField("Symbol", text: $model.symbol)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    Button("Add", action: model.addStock)
+                    
+                }
                 if !model.stockData.isEmpty {
                     ForEach(model.stockData) { stock in
 
@@ -26,7 +33,6 @@ struct HomeView: View {
                                 .frame(width: 150, height: 50)
                             VStack (alignment: .trailing) {
                                 Text(stock.latestClose)
-                                Text("Change")
                             }
                             .frame(width: 100)
                         }
