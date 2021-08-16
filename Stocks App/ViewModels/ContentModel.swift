@@ -16,6 +16,7 @@ class ContentModel:ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
     
+    @Published var symbolValid = false
     @Published var stockData:[StockData] = []
     @Published var symbol = ""
     @Published var stockEntities:[StockEntity] = []
@@ -23,6 +24,16 @@ class ContentModel:ObservableObject {
     init() {
         loadFromCoreData()
         loadAllSymbols()
+        
+        validateSymbolField()
+    }
+    
+    func validateSymbolField() {
+        $symbol
+            .sink { [unowned self] newValue in
+                self.symbolValid = !newValue.isEmpty
+            }
+            .store(in: &cancellables)
     }
     
     func loadFromCoreData() {
@@ -43,9 +54,27 @@ class ContentModel:ObservableObject {
         } catch {
             print(error)
         }
+        stockEntities.append(newStock)
         getStockData(for: symbol)
         
         symbol = ""
+    }
+    
+    func delete(at indexSet: IndexSet) {
+        guard let index = indexSet.first else {
+            return
+        }
+        stockData.remove(at: index)
+        let stockToRemove = stockEntities.remove(at: index)
+        
+        context.delete(stockToRemove)
+        
+        do {
+            try context.save()
+
+        } catch  {
+            print(error)
+        }
     }
     
     func loadAllSymbols() {

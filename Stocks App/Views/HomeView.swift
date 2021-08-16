@@ -18,6 +18,7 @@ struct HomeView: View {
                     TextField("Symbol", text: $model.symbol)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     Button("Add", action: model.addStock)
+                        .disabled(!model.symbolValid)
                     
                 }
                 if !model.stockData.isEmpty {
@@ -38,6 +39,7 @@ struct HomeView: View {
                         }
 
                     }
+                    .onDelete(perform: model.delete(at:))
                     
                 }
             }
