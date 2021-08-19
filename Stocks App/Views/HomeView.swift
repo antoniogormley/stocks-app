@@ -24,18 +24,20 @@ struct HomeView: View {
                 if !model.stockData.isEmpty {
                     ForEach(model.stockData) { stock in
 
-                        HStack {
-                            Text(stock.metaData.symbol)
-                            Spacer()
-                            LineChart(values: stock.closeValues)
-                                .fill(
-                                    LinearGradient(gradient: Gradient(colors: [Color.green.opacity(0.7), Color.green.opacity(0.2), Color.green.opacity(0)]), startPoint: .top, endPoint: .bottom)
-                                )
-                                .frame(width: 150, height: 50)
-                            VStack (alignment: .trailing) {
-                                Text(stock.latestClose)
+                        NavigationLink(destination: ContentView(stockname: stock.metaData.symbol,closedValues: stock.fiveMinValues,latestClose: stock.latestClose)) {
+                            HStack {
+                                Text(stock.metaData.symbol)
+                                Spacer()
+                                LineChart(values: stock.closeValues)
+                                    .fill(
+                                        LinearGradient(gradient: Gradient(colors: [Color.green.opacity(0.7), Color.green.opacity(0.2), Color.green.opacity(0)]), startPoint: .top, endPoint: .bottom)
+                                    )
+                                    .frame(width: 150, height: 50)
+                                VStack (alignment: .trailing) {
+                                    Text(stock.latestClose)
+                                }
+                                .frame(width: 100)
                             }
-                            .frame(width: 100)
                         }
 
                     }
