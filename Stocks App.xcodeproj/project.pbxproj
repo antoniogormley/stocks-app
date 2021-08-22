@@ -15,9 +15,10 @@
 		70AF048C26C7448200FFCDE6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 70AF048B26C7448200FFCDE6 /* Assets.xcassets */; };
 		70AF048F26C7448200FFCDE6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 70AF048E26C7448200FFCDE6 /* Preview Assets.xcassets */; };
 		70AF049C26C7E2B800FFCDE6 /* ContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AF049B26C7E2B700FFCDE6 /* ContentModel.swift */; };
-		70CBC36C26C9BB4600E35F5D /* LineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CBC36B26C9BB4600E35F5D /* LineChart.swift */; };
 		70CBC36F26CAD90C00E35F5D /* StockApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 70CBC36D26CAD90C00E35F5D /* StockApp.xcdatamodeld */; };
 		70CBC37126CADB3800E35F5D /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CBC37026CADB3800E35F5D /* Persistence.swift */; };
+		70E136E726D270E00047D2FD /* LineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E136E626D270E00047D2FD /* LineChart.swift */; };
+		70E136E926D271B20047D2FD /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E136E826D271B20047D2FD /* Test.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,9 +31,10 @@
 		70AF048E26C7448200FFCDE6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		70AF049026C7448200FFCDE6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		70AF049B26C7E2B700FFCDE6 /* ContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentModel.swift; sourceTree = "<group>"; };
-		70CBC36B26C9BB4600E35F5D /* LineChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LineChart.swift; path = ../../../../../../LineChart.swift; sourceTree = "<group>"; };
 		70CBC36E26CAD90C00E35F5D /* Main.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Main.xcdatamodel; sourceTree = "<group>"; };
 		70CBC37026CADB3800E35F5D /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		70E136E626D270E00047D2FD /* LineChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineChart.swift; sourceTree = "<group>"; };
+		70E136E826D271B20047D2FD /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,8 +108,9 @@
 		70AF049826C7D92400FFCDE6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				70E136E826D271B20047D2FD /* Test.swift */,
 				70A8C69126C98CFF009006C3 /* HomeView.swift */,
-				70CBC36B26C9BB4600E35F5D /* LineChart.swift */,
+				70E136E626D270E00047D2FD /* LineChart.swift */,
 				7020029126CB0CBF00CA84F2 /* ContentView.swift */,
 			);
 			path = Views;
@@ -190,12 +193,13 @@
 			files = (
 				70CBC36F26CAD90C00E35F5D /* StockApp.xcdatamodeld in Sources */,
 				70AF049C26C7E2B800FFCDE6 /* ContentModel.swift in Sources */,
+				70E136E926D271B20047D2FD /* Test.swift in Sources */,
+				70E136E726D270E00047D2FD /* LineChart.swift in Sources */,
 				7020029226CB0CBF00CA84F2 /* ContentView.swift in Sources */,
 				70A8C69426C990FC009006C3 /* StockData.swift in Sources */,
 				70CBC37126CADB3800E35F5D /* Persistence.swift in Sources */,
 				70A8C69226C98CFF009006C3 /* HomeView.swift in Sources */,
 				70AF048826C7448000FFCDE6 /* Stocks_App.swift in Sources */,
-				70CBC36C26C9BB4600E35F5D /* LineChart.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

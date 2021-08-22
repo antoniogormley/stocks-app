@@ -9,9 +9,9 @@ import SwiftUI
 import StockCharts
 
 struct ContentView: View {
-    var stockname:String
     var closedValues:[Double]
-    var latestClose:String
+    var dates:[String]
+    var hours:[String]
     
     var change:Double {
         (closedValues.last! - closedValues.first!)/closedValues.first!
@@ -21,7 +21,7 @@ struct ContentView: View {
         
         VStack (spacing: 100) {
             HStack (spacing:20){
-            Text(latestClose)
+//            Text(latestClose)
                 .font(.largeTitle)
             Text("\(change)%")
                 
