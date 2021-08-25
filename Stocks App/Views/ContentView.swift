@@ -9,9 +9,12 @@ import SwiftUI
 import StockCharts
 
 struct ContentView: View {
-    var stockname:String
+    @EnvironmentObject var model:ContentModel
+
     var closedValues:[Double]
-    var latestClose:String
+    var dates:[String]
+    var hours:[String]
+    var symbol:String
     
     var change:Double {
         (closedValues.last! - closedValues.first!)/closedValues.first!
@@ -21,15 +24,15 @@ struct ContentView: View {
         
         VStack (spacing: 100) {
             HStack (spacing:20){
-            Text(latestClose)
-                .font(.largeTitle)
+//                Text(String(model.fiveMin().last ?? 0))
+//                .font(.largeTitle)
             Text("\(change)%")
                 
             }
             let lineChartController = LineChartController(
                 prices: closedValues,
-                dates: nil,
-                hours: nil,
+                dates: dates,
+                hours: hours,
                 labelColor: .green,
                 indicatorPointColor: .green,
                 showingIndicatorLineColor: .green,
@@ -40,6 +43,6 @@ struct ContentView: View {
             )
             LineChartView(lineChartController: lineChartController)
                             .frame(width: 400, height: 300)
-        }.navigationBarTitle(stockname)
+        }.navigationBarTitle(symbol)
     }
 }

@@ -10,6 +10,8 @@ import CoreData
 
 struct HomeView: View {
     @EnvironmentObject var model:ContentModel
+    let userDefaults = UserDefaults.standard
+
     
     var body: some View {
         NavigationView {
@@ -22,19 +24,20 @@ struct HomeView: View {
                     
                 }
                 if !model.stockData.isEmpty {
-                    ForEach(model.stockData) { stock in
+                    ForEach(model.stockEntities) { stock in
 
-                        NavigationLink(destination: ContentView(stockname: stock.metaData.symbol,closedValues: stock.fiveMinValues,latestClose: stock.latestClose)) {
+                        NavigationLink(destination: ContentView(closedValues: userDefaults.object(forKey: "AAPL") as! [Double], dates: model.Dates(), hours: model.Hours(),symbol: stock.symbol ?? "")) {
                             HStack {
-                                Text(stock.metaData.symbol)
+                                Text(model.symbol)
                                 Spacer()
-                                LineChart(values: stock.closeValues)
+                                LineChart(values: model.fiveMin2())
+//                                    TO DO make it adaptive to symbol
                                     .fill(
                                         LinearGradient(gradient: Gradient(colors: [Color.green.opacity(0.7), Color.green.opacity(0.2), Color.green.opacity(0)]), startPoint: .top, endPoint: .bottom)
                                     )
                                     .frame(width: 150, height: 50)
                                 VStack (alignment: .trailing) {
-                                    Text(stock.latestClose)
+                                    Text(stock.symbol ?? ":(")
                                 }
                                 .frame(width: 100)
                             }
@@ -42,6 +45,7 @@ struct HomeView: View {
 
                     }
                     .onDelete(perform: model.delete(at:))
+                    
                     
                 }
             }

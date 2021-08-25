@@ -12,20 +12,71 @@ import Combine
 class ContentModel:ObservableObject {
     private let context = PersistenceController.shared.container.viewContext
     
-    let APIKey = "FBKE3UHHHPI2WSOC"
+    let APIKey = "bc50df22b34886a6947966c591119b42"
 
     private var cancellables = Set<AnyCancellable>()
     
     @Published var symbolValid = false
-    @Published var stockData:[StockData] = []
+    @Published var stockData:[StockDataEntry] = []
     @Published var symbol = ""
     @Published var stockEntities:[StockEntity] = []
     
+    var data:[Double] = []
+
+    
+    let userDefaults = UserDefaults.standard
+
+    
     init() {
         loadFromCoreData()
-        loadAllSymbols()
-        
+//        loadAllSymbols()
+//
         validateSymbolField()
+    }
+    
+    func fiveMin() -> [Double] {
+        var fiveMinValues: [Double] {
+            stockData.map {($0.close)}
+        }
+        return fiveMinValues.reversed()
+
+    }
+    func fiveMin2() -> [Double] {
+        var closeValues: [Double] {
+                let rawValues = userDefaults.object(forKey: "AAPL") as! [Double]
+                let max = rawValues.max()!
+                let min = rawValues.min()!
+        
+                return rawValues.map { ($0 - min * 0.95) / (max - min * 0.95)}
+            }
+        return closeValues
+    }
+    
+    func Dates() -> [String] {
+        var Date:[String] = []
+        for index in stockData.indices {
+        let fullName : String = stockData[index].date
+        let fullNameArr : [String] = fullName.components(separatedBy: " ")
+
+        // And then to access the individual words:
+            Date.append(fullNameArr[0])
+        }
+        
+        return Date.reversed()
+
+    }
+    func Hours() -> [String] {
+        var Date:[String] = []
+        for index in stockData.indices {
+        let fullName : String = stockData[index].date
+        let fullNameArr : [String] = fullName.components(separatedBy: " ")
+
+        // And then to access the individual words:
+            Date.append(fullNameArr[1])
+        }
+        
+        return Date.reversed()
+
     }
     
     func validateSymbolField() {
@@ -85,9 +136,10 @@ class ContentModel:ObservableObject {
     }
     
     func getStockData(for symbol:String) {
-        let url = URL(string: "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=\(symbol)&interval=5min&apikey='\(APIKey)")!
+        let urlString = "https://financialmodelingprep.com/api/v3/historical-chart/5min/\(symbol)?apikey=\(APIKey)"
+        let url = URL(string: urlString)
         URLSession.shared
-            .dataTaskPublisher(for: url)
+            .dataTaskPublisher(for: url ?? URL(fileURLWithPath: ""))
             .tryMap { element -> Data in
                 guard let httpResponce = element.response as? HTTPURLResponse,
                       httpResponce.statusCode == 200 else {
@@ -95,7 +147,7 @@ class ContentModel:ObservableObject {
                 }
                 return element.data
             }
-            .decode(type: StockData.self, decoder: JSONDecoder())
+            .decode(type: [StockDataEntry].self, decoder: JSONDecoder())
             .sink { completion in
                 switch completion {
                 case .failure(let error):
@@ -106,7 +158,13 @@ class ContentModel:ObservableObject {
                 }
             } receiveValue: { [unowned self] stockData in
                 DispatchQueue.main.async {
-                    self.stockData.append(stockData)
+                    self.stockData.append(contentsOf: stockData)
+                    self.stockData.forEach { stock in
+                        data.append(stock.close)
+                        
+                    }
+                    userDefaults.set(data, forKey: symbol)
+                    print(userDefaults.object(forKey: symbol)!)
                 }
             }
             .store(in: &cancellables)
