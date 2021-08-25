@@ -26,11 +26,11 @@ struct HomeView: View {
                 if !model.stockData.isEmpty {
                     ForEach(model.stockEntities) { stock in
 
-                        NavigationLink(destination: ContentView(closedValues: userDefaults.object(forKey: "AAPL") as! [Double], dates: model.Dates(), hours: model.Hours(),symbol: stock.symbol ?? "")) {
+                        NavigationLink(destination: ContentView(closedValues: userDefaults.object(forKey: stock.symbol ?? "BP") as! [Double], dates: model.Dates(), hours: model.Hours(),symbol: stock.symbol ?? "")) {
                             HStack {
                                 Text(model.symbol)
                                 Spacer()
-                                LineChart(values: model.fiveMin2())
+                                LineChart(values: model.fiveMin2(symbol: stock.symbol ?? ""))
 //                                    TO DO make it adaptive to symbol
                                     .fill(
                                         LinearGradient(gradient: Gradient(colors: [Color.green.opacity(0.7), Color.green.opacity(0.2), Color.green.opacity(0)]), startPoint: .top, endPoint: .bottom)

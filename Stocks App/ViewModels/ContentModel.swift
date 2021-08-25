@@ -41,9 +41,9 @@ class ContentModel:ObservableObject {
         return fiveMinValues.reversed()
 
     }
-    func fiveMin2() -> [Double] {
+    func fiveMin2(symbol:String) -> [Double] {
         var closeValues: [Double] {
-                let rawValues = userDefaults.object(forKey: "AAPL") as! [Double]
+                let rawValues = userDefaults.object(forKey: symbol) as? [Double] ?? [20]
                 let max = rawValues.max()!
                 let min = rawValues.min()!
         
@@ -106,7 +106,7 @@ class ContentModel:ObservableObject {
             print(error)
         }
         stockEntities.append(newStock)
-        getStockData(for: symbol)
+        getStockData(symbol: symbol)
         
         symbol = ""
     }
@@ -117,7 +117,7 @@ class ContentModel:ObservableObject {
         }
         stockData.remove(at: index)
         let stockToRemove = stockEntities.remove(at: index)
-        
+//        stockEntities[index].symbol
         context.delete(stockToRemove)
         
         do {
@@ -131,11 +131,12 @@ class ContentModel:ObservableObject {
     func loadAllSymbols() {
         stockData = []
         stockEntities.forEach { stockEntity in
-            getStockData(for: stockEntity.symbol ?? "")
+            getStockData(symbol: stockEntity.symbol ?? "")
         }
     }
     
-    func getStockData(for symbol:String) {
+    func getStockData(symbol:String) {
+        stockData = []
         let urlString = "https://financialmodelingprep.com/api/v3/historical-chart/5min/\(symbol)?apikey=\(APIKey)"
         let url = URL(string: urlString)
         URLSession.shared
@@ -161,16 +162,59 @@ class ContentModel:ObservableObject {
                     self.stockData.append(contentsOf: stockData)
                     self.stockData.forEach { stock in
                         data.append(stock.close)
-                        
+
                     }
                     userDefaults.set(data, forKey: symbol)
-                    print(userDefaults.object(forKey: symbol)!)
+                    print(symbol)
+                    print(data)
+                    data = []
                 }
             }
             .store(in: &cancellables)
 
-        
+
     }
-    
+//    func getStockData(symbol:String) {
+//        //string path
+//        let urlString = "https://financialmodelingprep.com/api/v3/historical-chart/5min/\(symbol)?apikey=\(APIKey)"
+//        let url = URL(string: urlString)
+//
+//        guard url != nil else {
+//            return
+//        }
+//        //create url request object
+//        let request = URLRequest(url: url!)
+//        //get the session and kick of the task
+//        let session = URLSession.shared
+//
+//        let dataTask = session.dataTask(with: request) { data, response, error in
+//            //check if error
+//            guard error == nil else {
+//                return
+//            }
+//            do {
+//            //Create json decoder
+//            let decoder = JSONDecoder()
+//            //decode json
+//                let modules = try decoder.decode([StockDataEntry].self, from: data!)
+//                DispatchQueue.main.async {
+//                    self.stockData = modules
+//
+//                    self.stockData.forEach { stock in
+//                        self.data.append(stock.close)
+//
+//                    }
+//                    self.userDefaults.set(data, forKey: symbol)
+//                    print(symbol)
+//                    self.data = []
+//                }
+//            }catch{
+//                //couldnt parse json
+//            }
+//        }
+//        //kick off data
+//        dataTask.resume()
+//    }
+//
 }
 
