@@ -12,7 +12,7 @@ import Combine
 class ContentModel:ObservableObject {
     private let context = PersistenceController.shared.container.viewContext
     
-    let APIKey = "bc50df22b34886a6947966c591119b42"
+    let APIKey = "d63572de9e75bc284f8c04a80c0df522"
 
     private var cancellables = Set<AnyCancellable>()
     
@@ -29,7 +29,7 @@ class ContentModel:ObservableObject {
     
     init() {
         loadFromCoreData()
-//        loadAllSymbols()
+        loadAllSymbols()
 //
         validateSymbolField()
     }
@@ -106,7 +106,9 @@ class ContentModel:ObservableObject {
             print(error)
         }
         stockEntities.append(newStock)
-        getStockData(symbol: symbol)
+        getStockData(symbol: symbol) {
+            
+        }
         
         symbol = ""
     }
@@ -131,11 +133,16 @@ class ContentModel:ObservableObject {
     func loadAllSymbols() {
         stockData = []
         stockEntities.forEach { stockEntity in
-            getStockData(symbol: stockEntity.symbol ?? "")
+            getStockData(symbol: stockEntity.symbol ?? "") {
+                
+            }
         }
     }
     
-    func getStockData(symbol:String) {
+    func getStockData(symbol:String, handler: @escaping ()->Void) {
+        if cancellables.count > 0 {
+            cancellables.removeFirst()
+        }
         stockData = []
         let urlString = "https://financialmodelingprep.com/api/v3/historical-chart/5min/\(symbol)?apikey=\(APIKey)"
         let url = URL(string: urlString)
@@ -164,57 +171,17 @@ class ContentModel:ObservableObject {
                         data.append(stock.close)
 
                     }
+                    self.data = self.data.reversed()
                     userDefaults.set(data, forKey: symbol)
-                    print(symbol)
-                    print(data)
+//                    print(symbol)
+//                    print(data)
                     data = []
+                    handler()
                 }
             }
             .store(in: &cancellables)
-
+        
 
     }
-//    func getStockData(symbol:String) {
-//        //string path
-//        let urlString = "https://financialmodelingprep.com/api/v3/historical-chart/5min/\(symbol)?apikey=\(APIKey)"
-//        let url = URL(string: urlString)
-//
-//        guard url != nil else {
-//            return
-//        }
-//        //create url request object
-//        let request = URLRequest(url: url!)
-//        //get the session and kick of the task
-//        let session = URLSession.shared
-//
-//        let dataTask = session.dataTask(with: request) { data, response, error in
-//            //check if error
-//            guard error == nil else {
-//                return
-//            }
-//            do {
-//            //Create json decoder
-//            let decoder = JSONDecoder()
-//            //decode json
-//                let modules = try decoder.decode([StockDataEntry].self, from: data!)
-//                DispatchQueue.main.async {
-//                    self.stockData = modules
-//
-//                    self.stockData.forEach { stock in
-//                        self.data.append(stock.close)
-//
-//                    }
-//                    self.userDefaults.set(data, forKey: symbol)
-//                    print(symbol)
-//                    self.data = []
-//                }
-//            }catch{
-//                //couldnt parse json
-//            }
-//        }
-//        //kick off data
-//        dataTask.resume()
-//    }
-//
 }
 

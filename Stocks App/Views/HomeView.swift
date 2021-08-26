@@ -26,7 +26,7 @@ struct HomeView: View {
                 if !model.stockData.isEmpty {
                     ForEach(model.stockEntities) { stock in
 
-                        NavigationLink(destination: ContentView(closedValues: userDefaults.object(forKey: stock.symbol ?? "BP") as! [Double], dates: model.Dates(), hours: model.Hours(),symbol: stock.symbol ?? "")) {
+                        NavigationLink(destination: ContentView(closedValues: userDefaults.object(forKey: stock.symbol ?? "BP") as? [Double] ?? [20], dates: model.Dates(), hours: model.Hours(),symbol: stock.symbol ?? "")) {
                             HStack {
                                 Text(model.symbol)
                                 Spacer()
