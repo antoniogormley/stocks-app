@@ -15,14 +15,16 @@ class ContentModel:ObservableObject {
     let APIKey = "d63572de9e75bc284f8c04a80c0df522"
 
     private var cancellables = Set<AnyCancellable>()
-    
+//    @Published var time = 5
     @Published var symbolValid = false
     @Published var stockData:[StockDataEntry] = []
     @Published var symbol = ""
     @Published var stockEntities:[StockEntity] = []
     
+//    var selectedTime:Int = 5
+    
+    
     var data:[Double] = []
-
     
     let userDefaults = UserDefaults.standard
 
@@ -34,16 +36,20 @@ class ContentModel:ObservableObject {
         validateSymbolField()
     }
     
-    func fiveMin() -> [Double] {
-        var fiveMinValues: [Double] {
-            stockData.map {($0.close)}
-        }
-        return fiveMinValues.reversed()
+//    func text() {
+//        print(time)
+//    }
+    
+//    func fiveMin() -> [Double] {
+//        var fiveMinValues: [Double] {
+//            stockData.map {($0.close)}
+//        }
+//        return fiveMinValues.reversed()
 
-    }
+//    }
     func fiveMin2(symbol:String) -> [Double] {
         var closeValues: [Double] {
-                let rawValues = userDefaults.object(forKey: symbol) as? [Double] ?? [20]
+                let rawValues = userDefaults.object(forKey: "\(symbol) \(stockEntities.first!.time)") as? [Double] ?? [20]
                 let max = rawValues.max()!
                 let min = rawValues.min()!
         
@@ -97,8 +103,9 @@ class ContentModel:ObservableObject {
     
     func addStock() {
         let newStock = StockEntity(context: context)
+        //save to StockEntity
         newStock.symbol = symbol
-        
+        newStock.time = stockEntities.first?.time ?? 5
         do {
             try context.save()
 
@@ -143,8 +150,9 @@ class ContentModel:ObservableObject {
         if cancellables.count > 0 {
             cancellables.removeFirst()
         }
+        let time = stockEntities.first!.time
         stockData = []
-        let urlString = "https://financialmodelingprep.com/api/v3/historical-chart/5min/\(symbol)?apikey=\(APIKey)"
+        let urlString = "https://financialmodelingprep.com/api/v3/historical-chart/\(time)min/\(symbol)?apikey=\(APIKey)"
         let url = URL(string: urlString)
         URLSession.shared
             .dataTaskPublisher(for: url ?? URL(fileURLWithPath: ""))
@@ -172,7 +180,7 @@ class ContentModel:ObservableObject {
 
                     }
                     self.data = self.data.reversed()
-                    userDefaults.set(data, forKey: symbol)
+                    userDefaults.set(data, forKey: "\(symbol) \(time)")
 //                    print(symbol)
 //                    print(data)
                     data = []

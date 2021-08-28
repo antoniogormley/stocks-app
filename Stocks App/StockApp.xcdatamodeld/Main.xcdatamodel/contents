@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20G80" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="StockEntity" representedClassName="StockEntity" syncable="YES" codeGenerationType="class">
-        <attribute name="closeArray" optional="YES" attributeType="Transformable" customClassName="[Double]"/>
         <attribute name="symbol" attributeType="String" defaultValueString=""/>
+        <attribute name="time" attributeType="Integer 64" defaultValueString="5" usesScalarValueType="YES"/>
     </entity>
     <elements>
         <element name="StockEntity" positionX="-54" positionY="0" width="128" height="59"/>

@@ -10,14 +10,16 @@ import CoreData
 
 struct HomeView: View {
     @EnvironmentObject var model:ContentModel
-    let userDefaults = UserDefaults.standard
+    @State var selectedTime = 5
 
+    let userDefaults = UserDefaults.standard
+    
     
     var body: some View {
         NavigationView {
             List {
                 HStack {
-                    TextField("Symbol", text: $model.symbol)
+                    TextField("eg: AAPL", text: $model.symbol)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     Button("Add", action: model.addStock)
                         .disabled(!model.symbolValid)
@@ -25,17 +27,32 @@ struct HomeView: View {
                 }
                 if !model.stockData.isEmpty {
                     ForEach(model.stockEntities) { stock in
+                        let closedValues = userDefaults.object(forKey: "\(stock.symbol!) \(model.stockEntities.last!.time)") as? [Double] ?? [0]
+                        let closeValue = closedValues.first ?? 0
+                        let closedValueRounded = String(format: "%.2f", closeValue)
 
-                        NavigationLink(destination: ContentView(closedValues: userDefaults.object(forKey: stock.symbol ?? "BP") as? [Double] ?? [20], dates: model.Dates(), hours: model.Hours(),symbol: stock.symbol ?? "")) {
+                        let change:Double = ((closedValues.last! - closedValues.first!)/closedValues.first!)
+                        let changeRounded = String(format: "%.2f", change)
+
+                            
+
+                        NavigationLink(destination: ContentView(selectedTime: $selectedTime,symbol: stock.symbol ?? "")) {
                             HStack {
-                                Text(model.symbol)
+                                VStack {
+                                    Text(String(closedValueRounded))
+                                    Text("\(changeRounded)%")
+
+                                }
                                 Spacer()
                                 LineChart(values: model.fiveMin2(symbol: stock.symbol ?? ""))
-//                                    TO DO make it adaptive to symbol
                                     .fill(
                                         LinearGradient(gradient: Gradient(colors: [Color.green.opacity(0.7), Color.green.opacity(0.2), Color.green.opacity(0)]), startPoint: .top, endPoint: .bottom)
                                     )
                                     .frame(width: 150, height: 50)
+                                    .onAppear() {
+                                        stock.time = Int64(selectedTime)
+                                        print(stock.time)
+                                    }
                                 VStack (alignment: .trailing) {
                                     Text(stock.symbol ?? ":(")
                                 }
