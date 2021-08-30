@@ -20,11 +20,17 @@ class ContentModel:ObservableObject {
     @Published var stockData:[StockDataEntry] = []
     @Published var symbol = ""
     @Published var stockEntities:[StockEntity] = []
+    @Published var stockProfileData:[StockData] = []
+    @Published var image:UIImage?
+    @Published var time:Int?
     
 //    var selectedTime:Int = 5
     
     
     var data:[Double] = []
+    
+    var hours:[String] = []
+    var dates:[String] = []
     
     let userDefaults = UserDefaults.standard
 
@@ -58,39 +64,39 @@ class ContentModel:ObservableObject {
         return closeValues
     }
     
-    func Dates() -> [String] {
-        var Date:[String] = []
-        for index in stockData.indices {
-        let fullName : String = stockData[index].date
-        let fullNameArr : [String] = fullName.components(separatedBy: " ")
+//    func Dates() -> [String] {
+//        var Date:[String] = []
+//        for index in stockData.indices {
+//        let fullName : String = stockData[index].date
+//        let fullNameArr : [String] = fullName.components(separatedBy: " ")
+//
+//        // And then to access the individual words:
+//            Date.append(fullNameArr[0])
+//        }
+//
+//        return Date.reversed()
+//
+//    }
+//    func Hours() -> [String] {
+//        var Date:[String] = []
+//        for index in stockData.indices {
+//        let fullName : String = stockData[index].date
+//        let fullNameArr : [String] = fullName.components(separatedBy: " ")
+//
+//        // And then to access the individual words:
+//            Date.append(fullNameArr[1])
+//        }
+//
+//        return Date.reversed()
 
-        // And then to access the individual words:
-            Date.append(fullNameArr[0])
-        }
-        
-        return Date.reversed()
-
-    }
-    func Hours() -> [String] {
-        var Date:[String] = []
-        for index in stockData.indices {
-        let fullName : String = stockData[index].date
-        let fullNameArr : [String] = fullName.components(separatedBy: " ")
-
-        // And then to access the individual words:
-            Date.append(fullNameArr[1])
-        }
-        
-        return Date.reversed()
-
-    }
+//    }
     
-    func validateSymbolField() {
-        $symbol
-            .sink { [unowned self] newValue in
-                self.symbolValid = !newValue.isEmpty
-            }
-            .store(in: &cancellables)
+    func validateSymbolField() -> Bool {
+        if symbol.isEmpty {
+            return true
+        }else{
+            return false
+        }
     }
     
     func loadFromCoreData() {
@@ -146,13 +152,16 @@ class ContentModel:ObservableObject {
         }
     }
     
+    
     func getStockData(symbol:String, handler: @escaping ()->Void) {
         if cancellables.count > 0 {
             cancellables.removeFirst()
         }
-        let time = stockEntities.first!.time
+//        var time = stockEntities.first?.time ?? 5
+        let time = self.time
+
         stockData = []
-        let urlString = "https://financialmodelingprep.com/api/v3/historical-chart/\(time)min/\(symbol)?apikey=\(APIKey)"
+        let urlString = "https://financialmodelingprep.com/api/v3/historical-chart/\(time ?? 5)min/\(symbol)?apikey=\(APIKey)"
         let url = URL(string: urlString)
         URLSession.shared
             .dataTaskPublisher(for: url ?? URL(fileURLWithPath: ""))
@@ -177,13 +186,25 @@ class ContentModel:ObservableObject {
                     self.stockData.append(contentsOf: stockData)
                     self.stockData.forEach { stock in
                         data.append(stock.close)
-
+                        let fullName : String = stock.date
+                        let fullNameArr : [String] = fullName.components(separatedBy: " ")
+                        
+                        // And then to access the individual words:
+                        dates.append(fullNameArr[0])
+                        hours.append(fullNameArr[1])
                     }
                     self.data = self.data.reversed()
-                    userDefaults.set(data, forKey: "\(symbol) \(time)")
-//                    print(symbol)
-//                    print(data)
+                    self.dates = self.dates.reversed()
+                    self.hours = self.hours.reversed()
+
+
+                    userDefaults.set(data, forKey: "\(symbol) \(time ?? 5)")
+                    userDefaults.set(dates, forKey: "\(symbol) \(time ?? 5) dates")
+                    userDefaults.set(hours, forKey: "\(symbol) \(time ?? 5) hours")
+                    
                     data = []
+                    dates = []
+                    hours = []
                     handler()
                 }
             }
@@ -191,5 +212,41 @@ class ContentModel:ObservableObject {
         
 
     }
+    func getStockProfileData (symbol:String) {
+        //string path
+        let urlString = "https://financialmodelingprep.com/api/v3/profile/\(symbol)?apikey=d63572de9e75bc284f8c04a80c0df522"
+        let url = URL(string: urlString)
+        
+        guard url != nil else {
+            return
+        }
+        //create url request object
+        let request = URLRequest(url: url!)
+        //get the session and kick of the task
+        let session = URLSession.shared
+        
+        let dataTask = session.dataTask(with: request) { data, response, error in
+            //check if error
+            guard error == nil else {
+                return
+            }
+            do {
+            //Create json decoder
+            let decoder = JSONDecoder()
+            //decode json
+                let modules = try decoder.decode([StockData].self, from: data!)
+                DispatchQueue.main.async {
+                    self.stockProfileData = modules
+                }
+            }catch{
+                //couldnt parse json
+                print(error)
+            }
+        }
+        //kick off data
+        dataTask.resume()
+    }
 }
+
+
 

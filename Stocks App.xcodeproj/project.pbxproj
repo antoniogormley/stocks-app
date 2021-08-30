@@ -11,20 +11,23 @@
 		7020029226CB0CBF00CA84F2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7020029126CB0CBF00CA84F2 /* ContentView.swift */; };
 		7020029526CB16B800CA84F2 /* StockCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 7020029426CB16B800CA84F2 /* StockCharts */; };
 		70A8C69226C98CFF009006C3 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A8C69126C98CFF009006C3 /* HomeView.swift */; };
-		70A8C69426C990FC009006C3 /* StockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A8C69326C990FC009006C3 /* StockData.swift */; };
+		70A8C69426C990FC009006C3 /* StockDataEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A8C69326C990FC009006C3 /* StockDataEntry.swift */; };
 		70AF048826C7448000FFCDE6 /* Stocks_App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AF048726C7448000FFCDE6 /* Stocks_App.swift */; };
 		70AF048C26C7448200FFCDE6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 70AF048B26C7448200FFCDE6 /* Assets.xcassets */; };
 		70AF048F26C7448200FFCDE6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 70AF048E26C7448200FFCDE6 /* Preview Assets.xcassets */; };
 		70AF049C26C7E2B800FFCDE6 /* ContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AF049B26C7E2B700FFCDE6 /* ContentModel.swift */; };
 		70CBC36F26CAD90C00E35F5D /* StockApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 70CBC36D26CAD90C00E35F5D /* StockApp.xcdatamodeld */; };
 		70CBC37126CADB3800E35F5D /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CBC37026CADB3800E35F5D /* Persistence.swift */; };
+		70E5B8D526DC4BF3001F982D /* StockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70E5B8D426DC4BF3001F982D /* StockData.swift */; };
+		70E5B8DA26DCEC1F001F982D /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 70E5B8D926DCEC1F001F982D /* URLImage */; };
+		70E5B8DC26DCEC1F001F982D /* URLImageStore in Frameworks */ = {isa = PBXBuildFile; productRef = 70E5B8DB26DCEC1F001F982D /* URLImageStore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		7019612E26D9562E0009F8AF /* LineChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineChart.swift; sourceTree = "<group>"; };
 		7020029126CB0CBF00CA84F2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		70A8C69126C98CFF009006C3 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		70A8C69326C990FC009006C3 /* StockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockData.swift; sourceTree = "<group>"; };
+		70A8C69326C990FC009006C3 /* StockDataEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockDataEntry.swift; sourceTree = "<group>"; };
 		70AF048426C7448000FFCDE6 /* Stocks App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Stocks App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		70AF048726C7448000FFCDE6 /* Stocks_App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stocks_App.swift; sourceTree = "<group>"; };
 		70AF048B26C7448200FFCDE6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -33,6 +36,7 @@
 		70AF049B26C7E2B700FFCDE6 /* ContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentModel.swift; sourceTree = "<group>"; };
 		70CBC36E26CAD90C00E35F5D /* Main.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Main.xcdatamodel; sourceTree = "<group>"; };
 		70CBC37026CADB3800E35F5D /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		70E5B8D426DC4BF3001F982D /* StockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +44,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				70E5B8DA26DCEC1F001F982D /* URLImage in Frameworks */,
+				70E5B8DC26DCEC1F001F982D /* URLImageStore in Frameworks */,
 				7020029526CB16B800CA84F2 /* StockCharts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -98,7 +104,8 @@
 		70AF049626C7D91600FFCDE6 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				70A8C69326C990FC009006C3 /* StockData.swift */,
+				70A8C69326C990FC009006C3 /* StockDataEntry.swift */,
+				70E5B8D426DC4BF3001F982D /* StockData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -139,6 +146,8 @@
 			name = "Stocks App";
 			packageProductDependencies = (
 				7020029426CB16B800CA84F2 /* StockCharts */,
+				70E5B8D926DCEC1F001F982D /* URLImage */,
+				70E5B8DB26DCEC1F001F982D /* URLImageStore */,
 			);
 			productName = "Stocks App";
 			productReference = 70AF048426C7448000FFCDE6 /* Stocks App.app */;
@@ -169,6 +178,7 @@
 			mainGroup = 70AF047B26C7448000FFCDE6;
 			packageReferences = (
 				7020029326CB16B800CA84F2 /* XCRemoteSwiftPackageReference "StockCharts" */,
+				70E5B8D826DCEC1F001F982D /* XCRemoteSwiftPackageReference "url-image" */,
 			);
 			productRefGroup = 70AF048526C7448000FFCDE6 /* Products */;
 			projectDirPath = "";
@@ -199,11 +209,12 @@
 				70CBC36F26CAD90C00E35F5D /* StockApp.xcdatamodeld in Sources */,
 				70AF049C26C7E2B800FFCDE6 /* ContentModel.swift in Sources */,
 				7020029226CB0CBF00CA84F2 /* ContentView.swift in Sources */,
-				70A8C69426C990FC009006C3 /* StockData.swift in Sources */,
+				70A8C69426C990FC009006C3 /* StockDataEntry.swift in Sources */,
 				7019612F26D956940009F8AF /* LineChart.swift in Sources */,
 				70CBC37126CADB3800E35F5D /* Persistence.swift in Sources */,
 				70A8C69226C98CFF009006C3 /* HomeView.swift in Sources */,
 				70AF048826C7448000FFCDE6 /* Stocks_App.swift in Sources */,
+				70E5B8D526DC4BF3001F982D /* StockData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,6 +413,14 @@
 				minimumVersion = 1.2.9;
 			};
 		};
+		70E5B8D826DCEC1F001F982D /* XCRemoteSwiftPackageReference "url-image" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dmytro-anokhin/url-image";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -409,6 +428,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7020029326CB16B800CA84F2 /* XCRemoteSwiftPackageReference "StockCharts" */;
 			productName = StockCharts;
+		};
+		70E5B8D926DCEC1F001F982D /* URLImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 70E5B8D826DCEC1F001F982D /* XCRemoteSwiftPackageReference "url-image" */;
+			productName = URLImage;
+		};
+		70E5B8DB26DCEC1F001F982D /* URLImageStore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 70E5B8D826DCEC1F001F982D /* XCRemoteSwiftPackageReference "url-image" */;
+			productName = URLImageStore;
 		};
 /* End XCSwiftPackageProductDependency section */
 

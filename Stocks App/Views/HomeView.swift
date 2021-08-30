@@ -22,7 +22,7 @@ struct HomeView: View {
                     TextField("eg: AAPL", text: $model.symbol)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                     Button("Add", action: model.addStock)
-                        .disabled(!model.symbolValid)
+                        .disabled(model.validateSymbolField())
                     
                 }
                 if !model.stockData.isEmpty {
@@ -40,30 +40,41 @@ struct HomeView: View {
                             HStack {
                                 VStack {
                                     Text(String(closedValueRounded))
-                                    Text("\(changeRounded)%")
+                                    ZStack {
+                                        Rectangle()
+                                            .foregroundColor(.green)
+                                            .cornerRadius(7)
+
+                                            
+                                        Text("\(changeRounded)%")
+                                            .foregroundColor(.white)
+                                            .padding(4)
+
+                                    }
 
                                 }
                                 Spacer()
+                                Spacer()
                                 LineChart(values: model.fiveMin2(symbol: stock.symbol ?? ""))
                                     .fill(
-                                        LinearGradient(gradient: Gradient(colors: [Color.green.opacity(0.7), Color.green.opacity(0.2), Color.green.opacity(0)]), startPoint: .top, endPoint: .bottom)
+                                        LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.7), Color.blue.opacity(0.2), Color.blue.opacity(0)]), startPoint: .top, endPoint: .bottom)
                                     )
-                                    .frame(width: 150, height: 50)
+                                    .frame(width: 120, height: 50)
                                     .onAppear() {
-                                        stock.time = Int64(selectedTime)
                                         print(stock.time)
                                     }
                                 VStack (alignment: .trailing) {
                                     Text(stock.symbol ?? ":(")
+                                        .font(.title2)
+//                                        .bold()
                                 }
                                 .frame(width: 100)
                             }
                         }
+                        
 
                     }
                     .onDelete(perform: model.delete(at:))
-                    
-                    
                 }
             }
             .navigationBarTitle("My Stocks")
@@ -72,6 +83,10 @@ struct HomeView: View {
                     EditButton()
                 }
             }
+        }
+        .onAppear() {
+            model.time = selectedTime
+            print(model.time)
         }
     }
 }
